@@ -18,7 +18,7 @@ byline = models.CharField(max_length=50, null=True, blank=True)
 
 class AddArticleForm(forms.Form):
     title = forms.CharField(max_length=50)
-    body = forms.CharField(widget=forms.TextInput)
+    body = forms.CharField(widget=forms.Textarea)
     author = forms.ModelChoiceField(queryset=Author.objects.all())
 
 

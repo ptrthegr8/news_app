@@ -11,7 +11,7 @@ class Author(models.Model):
 
 class Article(models.Model):
     title = models.CharField(max_length=50)
-    body = models.CharField(max_length=150)
+    body = models.TextField()
     post_created = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
 

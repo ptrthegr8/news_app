@@ -9,6 +9,7 @@ class Author(models.Model):
     def __str__(self):
         return self.name
 
+
 class Article(models.Model):
     title = models.CharField(max_length=50)
     body = models.CharField(max_length=150)
@@ -17,4 +18,3 @@ class Article(models.Model):
 
     def __str__(self):
         return self.title
-

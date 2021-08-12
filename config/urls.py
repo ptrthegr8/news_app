@@ -18,8 +18,8 @@ from django.urls import path
 from news import views
 
 urlpatterns = [
-    path('article/<int:id>/', views.article_detail),
-    path('author/<int:id>/', views.author_detail),
-    path('', views.index_view, name="home"),
-    path('admin/', admin.site.urls),
+    path("article/<int:id>/", views.article_detail),
+    path("author/<int:id>/", views.author_detail),
+    path("", views.index_view, name="home"),
+    path("admin/", admin.site.urls),
 ]

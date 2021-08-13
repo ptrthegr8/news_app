@@ -1,6 +1,10 @@
-from django.shortcuts import render, HttpResponseRedirect, reverse
+from django.shortcuts import render, HttpResponseRedirect, reverse, HttpResponse
 from news.models import Article, Author
-from news.forms import AddArticleForm, AddAuthorForm
+from news.forms import AddArticleForm, AddAuthorForm, LoginForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login, authenticate
+from django.contrib.auth.models import User
+
 
 # Create your views here.
 def index_view(request):
@@ -21,6 +25,7 @@ def author_detail(request, id):
     )
 
 
+@login_required
 def add_article(request):
     if request.method == "POST":
         form = AddArticleForm(request.POST)
@@ -34,10 +39,34 @@ def add_article(request):
     return render(request, "generic_form.html", {"form": form})
 
 
+@login_required
 def add_author(request):
     if request.method == "POST":
         form = AddAuthorForm(request.POST)
-        form.save()
+        if form.is_valid():
+            data = form.cleaned_data
+            user = User.objects.create_user(
+                username=data["username"], password=data["password"]
+            )
+            Author.objects.create(
+                name=data["name"], byline=data["byline"], user=user
+            )
         return HttpResponseRedirect(reverse("home"))
     form = AddAuthorForm()
+    return render(request, "generic_form.html", {"form": form})
+
+
+def login_view(request):
+    if request.method == "POST":
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            foo = authenticate(
+                request, username=data["username"], password=data["password"]
+            )
+            if foo:
+                login(request, foo)
+                return HttpResponseRedirect(request.GET.get("next", reverse("home")))
+
+    form = LoginForm()
     return render(request, "generic_form.html", {"form": form})

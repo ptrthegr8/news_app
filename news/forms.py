@@ -22,7 +22,14 @@ class AddArticleForm(forms.Form):
     author = forms.ModelChoiceField(queryset=Author.objects.all())
 
 
-class AddAuthorForm(forms.ModelForm):
-    class Meta:
-        model = Author
-        fields = ["name", "byline"]
+class AddAuthorForm(forms.Form):
+    name = forms.CharField(max_length=50)
+    byline = forms.CharField(max_length=50)
+    username = forms.CharField(max_length=150)
+    password = forms.CharField(widget=forms.PasswordInput)
+    
+
+
+class LoginForm(forms.Form):
+    username = forms.CharField(max_length=150)
+    password = forms.CharField(widget=forms.PasswordInput)
